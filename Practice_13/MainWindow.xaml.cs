@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
+using System.IO;
 
 namespace Practice_13
 {
@@ -20,17 +21,32 @@ namespace Practice_13
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    { private string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
+        public static int[,] processedArray;
+        private DataTable res = new DataTable();
         public MainWindow()
         {
             Authorization auth = new Authorization();
             auth.ShowDialog();
-            if (auth.AuthorizationCheck == true) InitializeComponent();
+            if (auth.AuthorizationCheck == true)
+            {
+                InitializeComponent();
+                try
+                {
+                    using (StreamReader open = new StreamReader(path))
+                    {
+                        int arrayLenght = Convert.ToInt32(open.ReadLine());
+                        int arrayHeight = Convert.ToInt32(open.ReadLine());
+                        processedArray = new int[arrayHeight, arrayLenght];
+                    }
+                }
+                catch
+                { }
+            }
+
             else Close();
         }
-        private string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "file.txt");
-        public int[,] processedArray;
-        private DataTable res = new DataTable();
+       
 
         private void InfoButton(object sender, RoutedEventArgs e)
         {
@@ -40,7 +56,7 @@ namespace Practice_13
         private void Exit(object sender, RoutedEventArgs e)
         {
             MessageBoxResult res = MessageBox.Show("Завершить работу программы?", "Выход", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if(res == MessageBoxResult.Yes) Close();
+            if (res == MessageBoxResult.Yes) Close();
         }
 
         private void ResultOutputButtonClick(object sender, RoutedEventArgs e)
@@ -109,8 +125,14 @@ namespace Practice_13
 
         private void resultGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            selectedCell.Text = resultGrid.CurrentColumn.DisplayIndex.ToString(); 
-            selectedCell.Text +="," + resultGrid.CurrentColumn.DisplayIndex.ToString();
+            selectedCell.Text = resultGrid.CurrentColumn.DisplayIndex.ToString();
+            selectedCell.Text += "," + resultGrid.CurrentColumn.DisplayIndex.ToString();
+        }
+
+        private void SettingsWindow(object sender, RoutedEventArgs e)
+        {
+            SettingWindow settings = new SettingWindow();
+            settings.ShowDialog();
         }
     }
 }

@@ -13,6 +13,7 @@
                 <MenuItem Header="Рассчитать"></MenuItem>
                 <MenuItem Header="Сохранить" Click="SaveButton_click"></MenuItem>
                 <MenuItem Header="Открыть" Click="OpenButton_click"></MenuItem>
+                <MenuItem Header="Настройки" Click="SettingsWindow"></MenuItem>
                 <MenuItem Header="О программе"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Выход" Click="Exit"></MenuItem>
